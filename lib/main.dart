@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import './widgets/new_transaction.dart';
 import './widgets/transaction_list.dart';
@@ -5,7 +7,24 @@ import './models/transaction.dart';
 
 void main() {
   runApp(MaterialApp(
+    title: 'Personal Expenses',
     home: MyHomePage(),
+    theme: ThemeData(
+        primarySwatch: Colors.deepOrange,
+        accentColor: Colors.orangeAccent,
+        fontFamily: "QuickSand",
+        textTheme: ThemeData.light().textTheme.copyWith(
+                headline6: TextStyle(
+              fontFamily: 'QuickSand',
+              fontWeight: FontWeight.w700,
+            )),
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+                  headline6: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 20,
+              )),
+        )),
   ));
 }
 
@@ -16,18 +35,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
-    Transaction(
-      id: 't1',
-      name: "New Shoes",
-      amount: 107.99,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      name: "Groceries",
-      amount: 129.99,
-      date: DateTime.now(),
-    )
+    // Transaction(
+    //   id: 't1',
+    //   name: "New Shoes",
+    //   amount: 107.99,
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: 't2',
+    //   name: "Groceries",
+    //   amount: 129.99,
+    //   date: DateTime.now(),
+    // )
   ];
 
   void _addNewTransaction(String txTitle, double txAmount) {
@@ -60,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Expense App'),
+        title: Text('Personal Expenses'),
         actions: [
           IconButton(
               icon: Icon(Icons.add),
@@ -77,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: double.infinity,
               height: 60,
               child: Card(
-                color: Colors.orange,
+                color: Theme.of(context).cardColor,
                 elevation: 5,
                 child: Text(
                   'Chart!',
