@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import './widgets/new_transaction.dart';
 import './widgets/transaction_list.dart';
+import './widgets/chart.dart';
 import './models/transaction.dart';
 
 void main() {
@@ -49,6 +50,13 @@ class _MyHomePageState extends State<MyHomePage> {
     // )
   ];
 
+  List<Transaction> get _recentTransactions {
+    // this wo;; return us an element only if the day is lies in last 7 days;
+    return _userTransactions.where((element) {
+      return element.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
+  }
+
   void _addNewTransaction(String txTitle, double txAmount) {
     final newTx = Transaction(
         id: DateTime.now().toString(),
@@ -57,7 +65,6 @@ class _MyHomePageState extends State<MyHomePage> {
         date: DateTime.now());
 
     setState(() {
-      print('${newTx.name}');
       _userTransactions.add(newTx);
     });
   }
@@ -92,18 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
-              width: double.infinity,
-              height: 60,
-              child: Card(
-                color: Theme.of(context).cardColor,
-                elevation: 5,
-                child: Text(
-                  'Chart!',
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-            ),
+            Chart(_recentTransactions),
             TransactionList(
               userTransactions: _userTransactions,
             ),
