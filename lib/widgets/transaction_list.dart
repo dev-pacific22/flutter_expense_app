@@ -4,8 +4,12 @@ import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> userTransactions;
+  final Function deleteTransaction;
 
-  TransactionList({@required this.userTransactions});
+  TransactionList({@required this.userTransactions, this.deleteTransaction});
+  void _onDeleteTransactionPress(int index) {
+    deleteTransaction(index);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,22 +55,33 @@ class TransactionList extends StatelessWidget {
                         '\$ ${userTransactions[index].amount.toStringAsFixed(2)}',
                         style: TextStyle(
                             fontSize: 16,
-                            color: Colors.deepOrange,
+                            color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.w600),
                       ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(userTransactions[index].name,
-                            style: Theme.of(context).textTheme.headline6),
-                        Text(
-                          DateFormat.yMMMEd()
-                              .add_jm()
-                              .format(userTransactions[index].date),
-                          style: TextStyle(fontSize: 14, color: Colors.black54),
-                        )
-                      ],
+                    Flexible(
+                      fit: FlexFit.tight,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            userTransactions[index].name,
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                          Text(
+                            DateFormat.yMMMEd()
+                                .add_jm()
+                                .format(userTransactions[index].date),
+                            style:
+                                TextStyle(fontSize: 14, color: Colors.black54),
+                          )
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () => _onDeleteTransactionPress(index),
+                      color: Theme.of(context).errorColor,
                     )
                   ],
                 ));

@@ -87,14 +87,15 @@ class _NewTransactionState extends State<NewTransaction> {
               ],
             ),
             SizedBox(
-              height: 20,
+              height: 30,
             ),
             ElevatedButton(
                 style: ButtonStyle(
-                  padding: MaterialStateProperty.all(EdgeInsets.all(10)),
+                  padding: MaterialStateProperty.all(
+                      EdgeInsets.symmetric(vertical: 5, horizontal: 15)),
                   foregroundColor:
                       MaterialStateProperty.all(Colors.lime.shade300),
-                  textStyle: MaterialStateProperty.all(TextStyle(fontSize: 20)),
+                  textStyle: MaterialStateProperty.all(TextStyle(fontSize: 16)),
                 ),
                 child: Text(
                   'Add Transaction',
