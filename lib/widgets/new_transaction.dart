@@ -49,60 +49,66 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          vertical: 15,
-          horizontal: 20,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            TextField(
-              decoration: InputDecoration(labelText: 'Title'),
-              controller: titleController,
-            ),
-            TextField(
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Amount'),
-              controller: amountController,
-              onSubmitted: (_) => _submitData(),
-            ),
-            Row(
-              children: [
-                Flexible(
-                  child: TextField(
-                    enabled: false,
-                    decoration: InputDecoration(labelText: 'No date selected'),
-                    controller: dateController,
+    return SingleChildScrollView(
+      child: Card(
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 15,
+            left: 20,
+            right: 20,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextField(
+                decoration: InputDecoration(labelText: 'Title'),
+                controller: titleController,
+              ),
+              TextField(
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: 'Amount'),
+                controller: amountController,
+                onSubmitted: (_) => _submitData(),
+              ),
+              Row(
+                children: [
+                  Flexible(
+                    child: TextField(
+                      enabled: false,
+                      decoration:
+                          InputDecoration(labelText: 'No date selected'),
+                      controller: dateController,
+                    ),
                   ),
-                ),
-                FlatButton(
-                  onPressed: _onSelectDatePress,
+                  FlatButton(
+                    onPressed: _onSelectDatePress,
+                    child: Text(
+                      'Select Date',
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              ElevatedButton(
+                  style: ButtonStyle(
+                    padding: MaterialStateProperty.all(
+                        EdgeInsets.symmetric(vertical: 5, horizontal: 15)),
+                    foregroundColor:
+                        MaterialStateProperty.all(Colors.lime.shade300),
+                    textStyle:
+                        MaterialStateProperty.all(TextStyle(fontSize: 16)),
+                  ),
                   child: Text(
-                    'Select Date',
-                    style: TextStyle(color: Theme.of(context).primaryColor),
+                    'Add Transaction',
+                    style: TextStyle(color: Colors.white),
                   ),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            ElevatedButton(
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all(
-                      EdgeInsets.symmetric(vertical: 5, horizontal: 15)),
-                  foregroundColor:
-                      MaterialStateProperty.all(Colors.lime.shade300),
-                  textStyle: MaterialStateProperty.all(TextStyle(fontSize: 16)),
-                ),
-                child: Text(
-                  'Add Transaction',
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: _submitData)
-          ],
+                  onPressed: _submitData)
+            ],
+          ),
         ),
       ),
     );
