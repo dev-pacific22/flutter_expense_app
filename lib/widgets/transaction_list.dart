@@ -1,3 +1,4 @@
+import './transaction_item.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/transaction.dart';
@@ -36,52 +37,11 @@ class TransactionList extends StatelessWidget {
           )
         : ListView.builder(
             itemBuilder: (context, index) {
-              return Card(
-                  child: Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 15,
-                    ),
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 1, color: Theme.of(context).accentColor),
-                    ),
-                    child: Text(
-                      '\$ ${userTransactions[index].amount.toStringAsFixed(2)}',
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Flexible(
-                    fit: FlexFit.tight,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          userTransactions[index].name,
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                        Text(
-                          DateFormat.yMMMEd()
-                              .add_jm()
-                              .format(userTransactions[index].date),
-                          style: TextStyle(fontSize: 14, color: Colors.black54),
-                        )
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () => _onDeleteTransactionPress(index),
-                    color: Theme.of(context).errorColor,
-                  )
-                ],
-              ));
+              return TransactionItem(
+                userTransaction: userTransactions[index],
+                onDeleteTransactionPress: _onDeleteTransactionPress,
+                index: index,
+              );
             },
             itemCount: userTransactions.length,
           );

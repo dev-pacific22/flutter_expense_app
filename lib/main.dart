@@ -27,6 +27,7 @@ void main() {
                 headline6: TextStyle(
               fontFamily: 'QuickSand',
               fontWeight: FontWeight.w700,
+              color: Colors.black87,
             )),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
@@ -93,6 +94,66 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Widget _buildLandscapeContent(PreferredSizeWidget appBar) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Show Chart', style: Theme.of(context).textTheme.headline6),
+            Switch.adaptive(
+              activeColor: Theme.of(context).accentColor,
+              value: _showChart,
+              onChanged: onChanged,
+            ),
+          ],
+        ),
+        _showChart
+            ? Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.6,
+                child: Chart(_recentTransactions),
+              )
+            : Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height) *
+                    0.8,
+                child: TransactionList(
+                  userTransactions: _userTransactions,
+                  deleteTransaction: _deleteTransaction,
+                ),
+              ),
+      ],
+    );
+  }
+
+  Widget _buildPotraitContent(PreferredSizeWidget appBar) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Container(
+          height: (MediaQuery.of(context).size.height -
+                  appBar.preferredSize.height -
+                  MediaQuery.of(context).padding.top) *
+              0.2,
+          child: Chart(_recentTransactions),
+        ),
+        Container(
+          height: (MediaQuery.of(context).size.height -
+                  appBar.preferredSize.height) *
+              0.8,
+          child: TransactionList(
+            userTransactions: _userTransactions,
+            deleteTransaction: _deleteTransaction,
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isLandscape =
@@ -115,72 +176,22 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           )
         : AppBar(
-            title: Text('Personal Expenses'),
+            title: const Text('Personal Expenses'),
             actions: [
               IconButton(
-                  icon: Icon(Icons.add),
+                  icon: const Icon(Icons.add),
                   onPressed: () {
                     _onAddButtonPress(context);
                   })
             ],
           );
 
-    final appBody = SingleChildScrollView(
-      child: isLandscape
-          ? Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('ShowChart'),
-                    Switch.adaptive(
-                      activeColor: Theme.of(context).accentColor,
-                      value: _showChart,
-                      onChanged: onChanged,
-                    ),
-                  ],
-                ),
-                _showChart
-                    ? Container(
-                        height: (MediaQuery.of(context).size.height -
-                                appBar.preferredSize.height -
-                                MediaQuery.of(context).padding.top) *
-                            0.6,
-                        child: Chart(_recentTransactions),
-                      )
-                    : Container(
-                        height: (MediaQuery.of(context).size.height -
-                                appBar.preferredSize.height) *
-                            0.8,
-                        child: TransactionList(
-                          userTransactions: _userTransactions,
-                          deleteTransaction: _deleteTransaction,
-                        ),
-                      ),
-              ],
-            )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Container(
-                  height: (MediaQuery.of(context).size.height -
-                          appBar.preferredSize.height -
-                          MediaQuery.of(context).padding.top) *
-                      0.2,
-                  child: Chart(_recentTransactions),
-                ),
-                Container(
-                  height: (MediaQuery.of(context).size.height -
-                          appBar.preferredSize.height) *
-                      0.8,
-                  child: TransactionList(
-                    userTransactions: _userTransactions,
-                    deleteTransaction: _deleteTransaction,
-                  ),
-                ),
-              ],
-            ),
+    final appBody = SafeArea(
+      child: SingleChildScrollView(
+        child: isLandscape
+            ? _buildLandscapeContent(appBar)
+            : _buildPotraitContent(appBar),
+      ),
     );
     return Platform.isIOS
         ? CupertinoPageScaffold(
